@@ -64,7 +64,7 @@ struct ContentView: View {
                         MapCamera(
                             centerCoordinate:
                                 predator.location,
-                            distance: 30000
+                            distance: 50000
                         )))
                     
                 } label: {

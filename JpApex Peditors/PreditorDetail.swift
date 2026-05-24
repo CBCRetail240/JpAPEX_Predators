@@ -49,22 +49,41 @@ struct PreditorDetail: View {
                         .font(.largeTitle)
                     
 //                  Current location
-                    Map(position: $position){
-                        Annotation(predator.name, coordinate: predator.location) {
-                            Image(predator.image)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 50, height: 50)
-                                .scaleEffect(x: -1)
+                    NavigationLink{
+                        PredatorMapView(predator: predator, position: .camera(MapCamera(
+                            centerCoordinate: predator.location,
+                            distance: 1000,
+                            heading: 250,
+                            pitch: 80)))
+                    } label: {
+                        Map(position: $position){
+                            Annotation(predator.name, coordinate: predator.location) {
+                                Image(predator.image)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: geo.size.width/6.8, height: geo.size.height/3.5)
+                                    .scaleEffect(x: -1)
+                                    .shadow(color: .white, radius: 1)
+                                    
+                            }
+                            
+                            .annotationTitles(.hidden)
+                            
                         }
-                        
-//                        .annotationTitles(.hidden)
-                        
+                        .frame(height: 150)
+                        .clipShape(.rect(cornerRadius: 15))
+                        .overlay(alignment: .topLeading){
+                            Text("Current Location")
+                                .font(.headline)
+                                .padding([.leading, .bottom], 6)
+                                .padding(.trailing, 7)
+                                .background(.black.opacity(0.3))
+                                .clipShape(.rect(cornerRadius: 10))
+                                
+                        }
+                        //                    .disabled(true)
+//                                            .allowsHitTesting(false)
                     }
-                    .frame(height: 150)
-                    .clipShape(.rect(cornerRadius: 15))
-//                    .disabled(true)
-//                    .allowsHitTesting(false)
 
                     //Movie list
                     Text("Appears In:")
@@ -118,14 +137,14 @@ struct PreditorDetail: View {
 
 #Preview {
     
-    let predator = Predators().apexPredators[2]
+    let predator = Predators().apexPredators[3]
     
     NavigationStack{
         PreditorDetail(predator: predator, position: .camera(
             MapCamera(
                 centerCoordinate:
                     predator.location,
-                distance: 30000
+                distance: 50000
             )))
         .preferredColorScheme(ColorScheme.dark)
     }

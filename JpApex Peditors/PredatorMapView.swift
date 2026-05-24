@@ -32,22 +32,23 @@ struct PredatorMapView: View {
                     .annotationTitles(.hidden)
                 }
             }
-            //        .mapStyle(.imagery(elevation: .realistic))
+            .mapStyle(
+                globalView
+                ? .imagery(elevation: .realistic)
+                : .standard
+            )
             
             
             Button{
                 
                 globalView.toggle()
                 
-                withAnimation(.easeInOut(duration: 2)){
+                withAnimation(.easeInOut(duration: 4)){
                     
                     if globalView{
                         position = .camera(
                             MapCamera(
-                                centerCoordinate: CLLocationCoordinate2D(
-                                    latitude: 0,
-                                    longitude: 0
-                                ),
+                                centerCoordinate: predator.location,
                                 distance: 40000000
                             )
                         )
